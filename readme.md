@@ -6,7 +6,7 @@ Junbin Yuan
 ## Instructor: 
 Prof. Pedro V. Sander <psander@ust.hk>
 ## Pre-requisite: 
-    Install python 3.X from https://python.org  . In `<cmd>`, se following command to create localhost for testing:
+Install python 3.X from https://python.org. In `<cmd>`, see following command to create localhost for testing:
 ```
 cd <path-to-repository>
 python -m http.server
