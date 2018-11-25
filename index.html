@@ -17,28 +17,59 @@
 </head>
 
 <body>
-    <script src="js/three.js"></script>
-    <script src="js/scene.js"></script>
+    <script src="js/three.min.js"></script>
     <script>
-        var scene = new THREE.Scene();
-        var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        var renderer = new THREE.WebGLRenderer();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        document.body.appendChild(renderer.domElement);
+        // Set scene
+        var container;
+        var camera, scene, renderer;
+        // Set mouse tracker
+        var mouseX = 0, mouseY = 0;
+        var windowHalfX = window.innerWidth / 2;
+        var windowHalfY = window.innerHeight / 2;
 
-        var geometry = new THREE.BoxGeometry(1, 1, 1);
-        var material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-        var cube = new THREE.Mesh(geometry, material);
-        scene.add(cube);
-        camera.position.z = 5;
+        init();
+        animate();
+
+
+        function init() {
+            // Init scene container
+            container = document.createElement("div");
+            document.body.appendChild(container);
+
+            // Scene
+            scene = new THREE.Scene();
+            // Skybox
+            var geo = new THREE.BoxGeometry(10000, 10000, 10000);
+            var skyboxMaterials = [
+                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("texture/sor_sea/sea_ft.JPG"), side: THREE.DoubleSide }),
+                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("texture/sor_sea/sea_bk.JPG"), side: THREE.DoubleSide }),
+                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("texture/sor_sea/sea_up.JPG"), side: THREE.DoubleSide }),
+                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("texture/sor_sea/sea_dn.JPG"), side: THREE.DoubleSide }),
+                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("texture/sor_sea/sea_rt.JPG"), side: THREE.DoubleSide }),
+                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("texture/sor_sea/sea_lf.JPG"), side: THREE.DoubleSide })
+            ];
+            var faceMaterial = new THREE.MeshFaceMaterial(skyboxMaterials);
+            var cube = new THREE.Mesh(geo, faceMaterial);
+            scene.add(cube);
+
+            // Camera components
+            camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 1e6);
+            camera.position.z = 1000;
+
+            // Lighting 
+            //var ambientLight = new THREE.AmbientLight( 0x404040 , 1 );
+            //scene.add(ambientLight);
+
+            // WebGL Renderer!
+            renderer = new THREE.WebGLRenderer();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.body.appendChild(renderer.domElement);
+        }
 
         function animate() {
             requestAnimationFrame(animate);
-            cube.rotation.x += 0.01;
-            cube.rotation.y += 0.01;
             renderer.render(scene, camera);
         }
-        animate();
     </script>
 </body>
 
