@@ -20,6 +20,7 @@
     <script src="js/three.min.js"></script>
     <script src="js/physi.js"></script>
     <script src="js/dat.gui.min.js"></script>
+    <script src="js/generator.js"></script>
     <script>
 
         'use strict'
@@ -27,11 +28,13 @@
         // Set scene
         var container;
         var camera, scene, renderer;
+        var generator = new CrystalGenerator(null);
         // Set mouse tracker
         var mouseX = 0, mouseY = 0;
         var windowHalfX = window.innerWidth / 2;
         var windowHalfY = window.innerHeight / 2;
         document.addEventListener("mousemove", onDocumentMouseMove, false);
+        document.addEventListener("mousedown", onMouseDown, false);
         // Set gui
         document.onload = UI();
         // Set physijs 
@@ -48,7 +51,8 @@
             document.body.appendChild(container);
 
             // Scene
-            scene = new THREE.Scene();
+            scene = new Physijs.Scene();
+            scene.setGravity(0, -10, 0)
             // Skybox
             var geo = new THREE.BoxGeometry(100000, 100000, 100000);
             var skyboxMaterials = [
@@ -70,11 +74,11 @@
             // Holding plane 
             var planeGeo = new THREE.PlaneGeometry(10000, 10000, 20, 20)
             var planeMaterial = new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("texture/wood/wood_seamless_1024.jpg"), side: THREE.DoubleSide });
-            var plane = new THREE.Mesh(planeGeo, planeMaterial)
+            var plane = new Physijs.PlaneMesh(planeGeo, planeMaterial, 0)
+            plane.position.set(0,-100,0);
+            plane.rotation.set(Math.PI/2,0,0);
             scene.add(plane);
-            plane.rotation.x = - Math.PI / 2;
-            //plane.rotation.z;
-            plane.position.y = -100;
+
             // Lighting 
             var ambientLight = new THREE.AmbientLight(0x404040, 1);
             scene.add(ambientLight);
@@ -96,15 +100,12 @@
             camera.position.y += (mouseY - camera.position.y) * .05;
             camera.position.y = Math.max(camera.position.y, 0);
             camera.lookAt(scene.position);
+            scene.simulate();
             renderer.render(scene, camera);
         }
         
         function UI(){
-            var gui = new dat.GUI();
-            gui.add(text, "value 1", 0,1);
-            gui.add(text, "value 2", 0,1);
-            gui.add(text, "enable param 1");
-            gui.add(text,"Generate!");
+            var gui = new dat.GUI();    
         }
 
         function onWindowResize() {
@@ -119,6 +120,10 @@
         function onDocumentMouseMove(event) {
             mouseX = (event.clientX - windowHalfX) * 5;
             mouseY = (event.clientY - windowHalfY) * 5;
+        }
+        
+        function onMouseDown(event) {
+            generator.generate(scene);
         }
     </script>
 </body>
