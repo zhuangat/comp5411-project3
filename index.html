@@ -8,7 +8,7 @@
         body {
             margin: 0;
         }
-
+    
         canvas {
             width: 100%;
             height: 100%
@@ -18,18 +18,16 @@
 
 <body>
     <script src="js/three.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-        crossorigin="anonymous"></script>
+    <script src="js/physi.js"></script>
     <script>
         // Set scene
         var container;
-        var body = $('body');
         var camera, scene, renderer;
         // Set mouse tracker
         var mouseX = 0, mouseY = 0;
         var windowHalfX = window.innerWidth / 2;
         var windowHalfY = window.innerHeight / 2;
-        body.on("mousemove",onDocumentMouseMove,false);
+        document.addEventListener("mousemove", onDocumentMouseMove, false);
         init();
         animate();
 
@@ -60,11 +58,11 @@
             camera.position.z = 1000;
             
             // Holding plane 
-            var planeGeo = new THREE.PlaneGeometry(1000,1000,20,20)
+            var planeGeo = new THREE.PlaneGeometry(10000,10000,20,20)
             var planeMaterial = new THREE.MeshBasicMaterial( { map: new THREE.TextureLoader().load("texture/wood/wood_seamless_1024.jpg"), side: THREE.DoubleSide} );
             var plane = new THREE.Mesh(planeGeo, planeMaterial)
             scene.add(plane);
-            plane.rotation.x = -90;
+            plane.rotation.x = - Math.PI/2;
             //plane.rotation.z;
             plane.position.y = -100;
             // Lighting 
@@ -86,6 +84,7 @@
         function render() {
             camera.position.x += (- mouseX - camera.position.x) * .05;
             camera.position.y += (mouseY - camera.position.y) * .05;
+            camera.position.y = Math.max(camera.position.y, 0);
             camera.lookAt(scene.position);
             renderer.render(scene, camera);
         }
@@ -100,8 +99,8 @@
         }
 
         function onDocumentMouseMove(event) {
-            mouseX = (event.clientX - windowHalfX) * 10;
-            mouseY = (event.clientY - windowHalfY) * 10;
+            mouseX = (event.clientX - windowHalfX) * 5;
+            mouseY = (event.clientY - windowHalfY) * 5;
         }
     </script>
 </body>
