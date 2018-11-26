@@ -22,13 +22,14 @@
     <script src="js/dat.gui.min.js"></script>
     <script src="js/fresnel.js"></script>
     <script src="js/generator.js"></script>
+    <script src="js/OrbitControl.js"></script>
     <script>
 
         'use strict'
 
         // Set scene
         var container;
-        var camera, scene, renderer;
+        var camera, scene, renderer, controls;
         var generator = new CrystalGenerator(null);
         // Set mouse tracker
         var mouseX = 0, mouseY = 0;
@@ -83,7 +84,7 @@
             // Camera components
             camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 1e5);
             camera.position.z = 1000;
-
+            
             // Holding plane 
             var planeGeo = new THREE.PlaneGeometry(10000, 10000, 20, 20)
             var planeMaterial = new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("texture/wood/wood_seamless_1024.jpg"), side: THREE.DoubleSide });
@@ -104,6 +105,19 @@
             renderer.setSize(window.innerWidth, window.innerHeight);
             document.body.appendChild(renderer.domElement);
             window.addEventListener('resize', onWindowResize, false);
+            
+            // Controls enabling moving the camera on drag
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.3
+            controls.screenSpacePanning = false;
+            
+            controls.minDistance = 400;
+            controls.maxDistance = 20000;
+            
+            controls.target = scene.position;
+            
+            controls.maxPolarAngle = Math.PI / 2;
         }
 
         function animate() {
@@ -112,10 +126,10 @@
         }
 
         function render() {
-            camera.position.x += (- mouseX - camera.position.x) * .05;
-            camera.position.y += (mouseY - camera.position.y) * .05;
-            camera.position.y = Math.max(camera.position.y, 0);
-            camera.lookAt(scene.position);
+            //camera.position.x += (- mouseX - camera.position.x) * .05;
+            //camera.position.y += (mouseY - camera.position.y) * .05;
+            //camera.position.y = Math.max(camera.position.y, 0);
+            //camera.lookAt(scene.position);
             scene.simulate();
             renderer.render(scene, camera);
         }
