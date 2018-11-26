@@ -31,6 +31,7 @@ class CrystalGenerator {
         object.position.set(Math.random() * 5000 - 2500, 1000, Math.random() * 5000 - 2500);
         object.rotation.set(Math.random()*(Math.PI),Math.random()*(Math.PI),Math.random()*(Math.PI));
         object.setLinearVelocity(new THREE.Vector3(0,500,500));
+        object.castShadow = true;
         scene.add(object);
     }
 }
