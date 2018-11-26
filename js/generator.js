@@ -19,8 +19,8 @@ class CrystalGenerator {
     }
 
     generate(scene, loader) {
-        //var geo = new THREE.OctahedronGeometry(250, 1);
-        var geo = THREE.Geometry().fromBufferGeometry(geos[-1]);
+        var geo = new THREE.OctahedronGeometry(250, 1);
+        // var geo = THREE.Geometry().fromBufferGeometry(geos[-1]);
         var material = new Physijs.createMaterial(
             this.shader,
             0,
