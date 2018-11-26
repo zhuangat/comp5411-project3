@@ -20,6 +20,7 @@
     <script src="js/three.min.js"></script>
     <script src="js/physi.js"></script>
     <script src="js/dat.gui.min.js"></script>
+    <script src="js/fresnel.js"></script>
     <script src="js/generator.js"></script>
     <script>
 
@@ -52,7 +53,7 @@
 
             // Scene
             scene = new Physijs.Scene();
-            scene.setGravity(0, -10, 0)
+            scene.setGravity(0, -10, 0);
             // Skybox
             var geo = new THREE.BoxGeometry(100000, 100000, 100000);
             var skyboxMaterials = [
@@ -65,7 +66,19 @@
             ];
             var faceMaterial = new THREE.MeshFaceMaterial(skyboxMaterials);
             var cube = new THREE.Mesh(geo, faceMaterial);
-            scene.add(cube);
+            //scene.add(cube);
+            
+            var path = [
+            "texture/sor_sea/sea_ft.JPG",
+            "texture/sor_sea/sea_bk.JPG",
+            "texture/sor_sea/sea_up.JPG",
+            "texture/sor_sea/sea_dn.JPG",
+            "texture/sor_sea/sea_rt.JPG",
+            "texture/sor_sea/sea_lf.JPG"
+            ];
+            var textureCube =  new THREE.CubeTextureLoader().load(path);
+            textureCube.format = THREE.RGBFormat;
+            scene.background = textureCube;
 
             // Camera components
             camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 1e5);
@@ -74,8 +87,8 @@
             // Holding plane 
             var planeGeo = new THREE.PlaneGeometry(10000, 10000, 20, 20)
             var planeMaterial = new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("texture/wood/wood_seamless_1024.jpg"), side: THREE.DoubleSide });
-            var plane = new Physijs.PlaneMesh(planeGeo, planeMaterial, 0)
-            plane.position.set(0,-100,0);
+            var plane = new Physijs.BoxMesh(planeGeo, planeMaterial, 0)
+            plane.position.set(0,-1000,0);
             plane.rotation.set(Math.PI/2,0,0);
             scene.add(plane);
 
