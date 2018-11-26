@@ -25,10 +25,20 @@
     <script>
 
         'use strict'
-
+        
         // Set scene
         var container;
         var camera, scene, renderer;
+        var loader = new THREE.JSONLoader();
+        var geos = [];
+        loader.load("/object/crystal1.json",function(object){
+            object.traverse(function (child) {
+                if( child instanceof THREE.Mesh ){
+                    geos.push(child.geometry);
+                }
+            })
+
+        })
         var generator = new CrystalGenerator(null);
         // Set mouse tracker
         var mouseX = 0, mouseY = 0;
@@ -69,12 +79,12 @@
             //scene.add(cube);
             
             var path = [
-            "texture/sor_sea/sea_ft.JPG",
-            "texture/sor_sea/sea_bk.JPG",
-            "texture/sor_sea/sea_up.JPG",
-            "texture/sor_sea/sea_dn.JPG",
-            "texture/sor_sea/sea_rt.JPG",
-            "texture/sor_sea/sea_lf.JPG"
+            "texture/Lycksele2/posx.JPG",
+            "texture/Lycksele2/negx.JPG",
+            "texture/Lycksele2/posy.JPG",
+            "texture/Lycksele2/negy.JPG",
+            "texture/Lycksele2/posz.JPG",
+            "texture/Lycksele2/negz.JPG"
             ];
             var textureCube =  new THREE.CubeTextureLoader().load(path);
             textureCube.format = THREE.RGBFormat;
@@ -84,7 +94,8 @@
             camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 1e5);
             camera.position.z = 1000;
 
-            // Holding plane 
+            // Holding plane
+            /*
             var planeGeo = new THREE.PlaneGeometry(10000, 10000, 20, 20)
             var planeMaterial = new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("texture/wood/wood_seamless_1024.jpg"), side: THREE.DoubleSide });
             var plane = new Physijs.BoxMesh(planeGeo, planeMaterial, 0)
@@ -92,7 +103,7 @@
             plane.rotation.set(-Math.PI/2,0,0);
             plane.receiveShadow = true;
             scene.add(plane);
-
+            */
             // Lighting 
             var directionalLight = new THREE.AmbientLight(0xffffff, 1);
             directionalLight.position.set( 1, 1, 1 );
@@ -101,6 +112,7 @@
 
             // WebGL Renderer!
             renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.alpha = true;
             renderer.setSize(window.innerWidth, window.innerHeight);
             document.body.appendChild(renderer.domElement);
             window.addEventListener('resize', onWindowResize, false);
@@ -112,9 +124,9 @@
         }
 
         function render() {
-            camera.position.x += (- mouseX - camera.position.x) * .05;
-            camera.position.y += (mouseY - camera.position.y) * .05;
-            camera.position.y = Math.max(camera.position.y, 0);
+            camera.position.x += (- mouseX - camera.position.x) * .1;
+            camera.position.y += (mouseY - camera.position.y) * .1;
+            //camera.position.y = Math.max(camera.position.y, 0);
             camera.lookAt(scene.position);
             scene.simulate();
             renderer.render(scene, camera);
@@ -134,8 +146,8 @@
         }
 
         function onDocumentMouseMove(event) {
-            mouseX = (event.clientX - windowHalfX) * 5;
-            mouseY = (event.clientY - windowHalfY) * 5;
+            mouseX = (event.clientX - windowHalfX) * 20;
+            mouseY = (event.clientY - windowHalfY) * 20;
         }
         
         function onMouseDown(event) {

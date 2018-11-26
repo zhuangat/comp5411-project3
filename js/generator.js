@@ -1,16 +1,14 @@
 
 const Shader = {
-    Phong: new THREE.MeshPhongMaterial({ color: 0x00ff00 }),
     Fresnel: 
         new THREE.ShaderMaterial( {
             uniforms: THREE.FresnelShader.uniforms,
             vertexShader: THREE.FresnelShader.vertexShader,
-            fragmentShader: THREE.FresnelShader.fragmentShader
+            fragmentShader: THREE.FresnelShader.fragmentShader,
         } )
     ,
     Basic: new THREE.MeshBasicMaterial({ color: 0x00ff00 })
 };
-
 class CrystalGenerator {
 
     constructor(shader) {
@@ -20,8 +18,9 @@ class CrystalGenerator {
             this.shader = Shader.Fresnel;
     }
 
-    generate(scene) {
-        var geo = new THREE.OctahedronGeometry(250, 0);
+    generate(scene, loader) {
+        //var geo = new THREE.OctahedronGeometry(250, 1);
+        var geo = THREE.Geometry().fromBufferGeometry(geos[-1]);
         var material = new Physijs.createMaterial(
             this.shader,
             0,
