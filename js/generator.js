@@ -22,6 +22,7 @@ const geos = [
     new THREE.TetrahedronGeometry(250, 0),
     new THREE.TetrahedronGeometry(250, 1),
     new THREE.TetrahedronGeometry(250, 2),
+    new THREE.TetrahedronGeometry(250, 5),
 ];
 class CrystalGenerator {
 

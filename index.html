@@ -53,7 +53,14 @@
                 "texture/LancellottiChapel/posz.JPG",
                 "texture/LancellottiChapel/negz.JPG"
             ],
-
+            sor_sea: [
+                "texture/sor_sea/sea_ft.JPG",
+                "texture/sor_sea/sea_bk.JPG",
+                "texture/sor_sea/sea_up.JPG",
+                "texture/sor_sea/sea_dn.JPG",
+                "texture/sor_sea/sea_rt.JPG",
+                "texture/sor_sea/sea_lf.JPG",
+            ]
 
         }
 
@@ -178,10 +185,10 @@
             var options = new Options();
 
             var f1 = gui.addFolder("Texture Cube");
-            var tc = f1.add(options, "textureCube", ["Lycksele2", "SanFrancisco4", "LancellottiChapel"])
+            var tc = f1.add(options, "textureCube", ["Lycksele2", "SanFrancisco4", "LancellottiChapel", "sor_sea"])
 
             var f2 = gui.addFolder('Fresnel Shader');
-            var rr = f2.add(options, "refractiveRatio", 1.000, 2.417);
+            var rr = f2.add(options, "refractiveRatio", 1.000, 2.000);
             var b = f2.add(options, "bias", 0, 1);
             var s = f2.add(options, "scale", 1, 5);
             var p = f2.add(options, "power", 2, 5).step(1);
