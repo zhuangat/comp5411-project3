@@ -27,6 +27,36 @@
 
         'use strict'
 
+
+        const paths = {
+            Lycksele2: [
+                "texture/Lycksele2/posx.JPG",
+                "texture/Lycksele2/negx.JPG",
+                "texture/Lycksele2/posy.JPG",
+                "texture/Lycksele2/negy.JPG",
+                "texture/Lycksele2/posz.JPG",
+                "texture/Lycksele2/negz.JPG"
+            ],
+            SanFrancisco4: [
+                "texture/SanFrancisco4/posx.JPG",
+                "texture/SanFrancisco4/negx.JPG",
+                "texture/SanFrancisco4/posy.JPG",
+                "texture/SanFrancisco4/negy.JPG",
+                "texture/SanFrancisco4/posz.JPG",
+                "texture/SanFrancisco4/negz.JPG"
+            ],
+            LancellottiChapel: [
+                "texture/LancellottiChapel/posx.JPG",
+                "texture/LancellottiChapel/negx.JPG",
+                "texture/LancellottiChapel/posy.JPG",
+                "texture/LancellottiChapel/negy.JPG",
+                "texture/LancellottiChapel/posz.JPG",
+                "texture/LancellottiChapel/negz.JPG"
+            ],
+
+
+        }
+
         // Set scene
         var container;
         var camera, scene, renderer, controls;
@@ -119,7 +149,7 @@
 
             controls.target = scene.position;
 
-            controls.maxPolarAngle = Math.PI / 2;
+            //controls.maxPolarAngle = Math.PI / 2;
         }
 
         function animate() {
@@ -138,6 +168,7 @@
 
         function UI() {
             var Options = function () {
+                this.textureCube = "Lycksele2";
                 this.refractiveRatio = THREE.FresnelShader.uniforms.mRefractiveRatio.value;
                 this.bias = THREE.FresnelShader.uniforms.mBias.value;
                 this.scale = THREE.FresnelShader.uniforms.mScale.value;
@@ -145,21 +176,34 @@
             }
             var gui = new dat.GUI();
             var options = new Options();
-            var rr = gui.add(options, "refractiveRatio", 1.000, 2.417);
-            var b = gui.add(options, "bias", 0, 1);
-            var s = gui.add(options, "scale", 1, 5);
-            var p = gui.add(options, "power", 2, 5).step(1);
+
+            var f1 = gui.addFolder("Texture Cube");
+            var tc = f1.add(options, "textureCube", ["Lycksele2", "SanFrancisco4", "LancellottiChapel"])
+
+            var f2 = gui.addFolder('Fresnel Shader');
+            var rr = f2.add(options, "refractiveRatio", 1.000, 2.417);
+            var b = f2.add(options, "bias", 0, 1);
+            var s = f2.add(options, "scale", 1, 5);
+            var p = f2.add(options, "power", 2, 5).step(1);
+
+            f2.open();
+
+            tc.onFinishChange(function (value) {
+                var textureCube = new THREE.CubeTextureLoader().load(paths[value]);
+                textureCube.format = THREE.RGBFormat;
+                scene.background = textureCube;
+            })
 
             rr.onFinishChange(function (value) {
                 THREE.FresnelShader.uniforms.mRefractiveRatio.value = value;
             });
-            b.onFinishChange(function (value){
+            b.onFinishChange(function (value) {
                 THREE.FresnelShader.uniforms.mBias.value = value;
             });
-            s.onFinishChange(function (value){
+            s.onFinishChange(function (value) {
                 THREE.FresnelShader.uniforms.mScale.value = value;
             });
-            p.onFinishChange(function (value){
+            p.onFinishChange(function (value) {
                 THREE.FresnelShader.uniforms.mPower.value = value;
             });
         }
@@ -179,7 +223,8 @@
         }
 
         function onMouseDown(event) {
-            generator.generate(scene);
+            if (event.which == 3)
+                generator.generate(scene);
         }
     </script>
 </body>
