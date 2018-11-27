@@ -70,14 +70,14 @@
             //scene.add(cube);
 
             var path = [
-            "texture/Lycksele2/posx.JPG",
-            "texture/Lycksele2/negx.JPG",
-            "texture/Lycksele2/posy.JPG",
-            "texture/Lycksele2/negy.JPG",
-            "texture/Lycksele2/posz.JPG",
-            "texture/Lycksele2/negz.JPG"
+                "texture/Lycksele2/posx.JPG",
+                "texture/Lycksele2/negx.JPG",
+                "texture/Lycksele2/posy.JPG",
+                "texture/Lycksele2/negy.JPG",
+                "texture/Lycksele2/posz.JPG",
+                "texture/Lycksele2/negz.JPG"
             ];
-            var textureCube =  new THREE.CubeTextureLoader().load(path);
+            var textureCube = new THREE.CubeTextureLoader().load(path);
             textureCube.format = THREE.RGBFormat;
             scene.background = textureCube;
 
@@ -97,7 +97,7 @@
             */
             // Lighting
             var directionalLight = new THREE.AmbientLight(0xffffff, 1);
-            directionalLight.position.set( 1, 1, 1 );
+            directionalLight.position.set(1, 1, 1);
             directionalLight.castShadow = true;
             scene.add(directionalLight);
 
@@ -136,8 +136,32 @@
             renderer.render(scene, camera);
         }
 
-        function UI(){
+        function UI() {
+            var Options = function () {
+                this.refractiveRatio = THREE.FresnelShader.uniforms.mRefractiveRatio.value;
+                this.bias = THREE.FresnelShader.uniforms.mBias.value;
+                this.scale = THREE.FresnelShader.uniforms.mScale.value;
+                this.power = THREE.FresnelShader.uniforms.mPower.value;
+            }
             var gui = new dat.GUI();
+            var options = new Options();
+            var rr = gui.add(options, "refractiveRatio", 1.000, 2.417);
+            var b = gui.add(options, "bias", 0, 1);
+            var s = gui.add(options, "scale", 1, 5);
+            var p = gui.add(options, "power", 2, 5).step(1);
+
+            rr.onFinishChange(function (value) {
+                THREE.FresnelShader.uniforms.mRefractiveRatio.value = value;
+            });
+            b.onFinishChange(function (value){
+                THREE.FresnelShader.uniforms.mBias.value = value;
+            });
+            s.onFinishChange(function (value){
+                THREE.FresnelShader.uniforms.mScale.value = value;
+            });
+            p.onFinishChange(function (value){
+                THREE.FresnelShader.uniforms.mPower.value = value;
+            });
         }
 
         function onWindowResize() {
