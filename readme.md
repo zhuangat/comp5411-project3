@@ -14,12 +14,18 @@ python -m http.server
 Access 127.0.0.1:8000 to view the project.
 ## How to play with it?
 Camera Control:
+
 Left mouse button drag - Rotate camera
+
 Middle mouse button scroll - Zoom in/out
+
 Right mouse button click - generate random crystals
+
 ## GUI
 You may change the params of the shader and env mapping on the top right GUI.
 ## Dependencies:
 Three.js,
 Physi.js,
 dat-gui.js.
+## Github repository:
+https://github.com/zhuangat/comp5411-project3
